@@ -1,7 +1,5 @@
 package func;
 
-import oracle.jdbc.proxy.annotation.Pre;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +8,7 @@ import java.util.Map;
 
 public class DataBaseVoids {
     private DataBaseVoids() {}
-    private static Connection con = null;
+    public static Connection con = null;
     private static ArrayList<String> list = new ArrayList<>();
     public static Map<Integer, Integer> idResults = new HashMap<>();
 
@@ -27,7 +25,7 @@ public class DataBaseVoids {
         }
     }
 
-    private static int getIntegerValue(ResultSet resultSet) throws SQLException{
+    public static int getIntegerValue(ResultSet resultSet) throws SQLException{
         int result = 0;
         while (resultSet.next()) {
             result = resultSet.getInt(1);
@@ -35,7 +33,7 @@ public class DataBaseVoids {
         return result;
     }
 
-    private static String getStringValue(ResultSet resultSet) throws SQLException{
+    public static String getStringValue(ResultSet resultSet) throws SQLException{
         String result = "";
         while (resultSet.next()) {
             result = resultSet.getString(1);
@@ -44,9 +42,8 @@ public class DataBaseVoids {
     }
 
     public static ResultSet selectAllHolidaysNames() throws SQLException {
-        ResultSet resultSet = null;
         Statement stmnt = con.createStatement();
-        return resultSet = stmnt.executeQuery("SELECT NAME, START_DATE FROM HOLIDAYLIBRARY.HOLIDAY");
+        return stmnt.executeQuery("SELECT NAME, START_DATE FROM HOLIDAYLIBRARY.HOLIDAY");
     }
 
     public static boolean isLogIn(String pass, String login) throws SQLException {
@@ -60,154 +57,180 @@ public class DataBaseVoids {
     }
 
     private static ResultSet selectUser(String pass, String login) throws SQLException {
-        ResultSet resultSet = null;
         PreparedStatement stmnt = con.prepareStatement("SELECT ID FROM USERLIST WHERE LOGIN='" + login + "' AND PASS='" + pass + "'");
-        return resultSet = stmnt.executeQuery();
+        return stmnt.executeQuery();
     }
 
     private static ResultSet selectUserTraditions(int userID) throws SQLException {
-        ResultSet resultSet = null;
         PreparedStatement stmnt = con.prepareStatement("SELECT * FROM TRADITION WHERE USER_ID = " + userID);
-        return resultSet = stmnt.executeQuery();
+        return stmnt.executeQuery();
     }
 
     public static ResultSet selectAllTraditions() throws SQLException {
-        ResultSet resultSet = null;
         PreparedStatement stmnt = con.prepareStatement("SELECT * FROM TRADITION");
-        return resultSet = stmnt.executeQuery();
+        return stmnt.executeQuery();
     }
 
     public static ResultSet selectCountries() throws SQLException {
-        ResultSet resultSet = null;
         PreparedStatement stmnt = con.prepareStatement("SELECT * FROM COUNTRY");
-        return resultSet = stmnt.executeQuery();
+        return stmnt.executeQuery();
     }
 
     public static ResultSet insertCountry(String countryName) throws SQLException {
-        ResultSet resultSet = null;
         PreparedStatement stmnt = con.prepareStatement("INSERT INTO COUNTRY (ID, NAME)" +
                 "VALUES (country_seq.nextval, '" + countryName + "')");
-        return resultSet = stmnt.executeQuery();
+        return stmnt.executeQuery();
+    }
+
+    public static void updateCountry(int id, String countryName) throws SQLException{
+        PreparedStatement stmnt = con.prepareStatement("UPDATE COUNTRY SET NAME = '" +
+                countryName + "' WHERE ID = '" + id + "'");
+        stmnt.executeQuery();
     }
 
     public static void insertNewImg(int id, String url) throws SQLException{
-        //ResultSet resultSet = null;
         PreparedStatement stmnt = con.prepareStatement("INSERT INTO IMG_URL (ID, URL)" +
                 "VALUES ('" + id + "', '" + url + "')");
-        //resultSet = stmnt.executeQuery();
         stmnt.executeQuery();
     }
 
     public static String getImgUrl(int id) throws SQLException{
-        ResultSet resultSet = null;
         PreparedStatement stmnt = con.prepareStatement("SELECT URL FROM IMG_URL " +
                 "WHERE ID = '" + id + "')");
-        resultSet = stmnt.executeQuery();
-        return getStringValue(resultSet);
+        return getStringValue(stmnt.executeQuery());
     }
 
     public static ResultSet selectHoliday() throws SQLException{
-        ResultSet resultSet = null;
         PreparedStatement stmnt = con.prepareStatement("SELECT * FROM HOLIDAY");
-        return resultSet = stmnt.executeQuery();
+        return stmnt.executeQuery();
     }
 
-    public static ResultSet insertHoliday(String holidayName, int typeId, String holidayDate)
-                                                                            throws SQLException{
-        ResultSet resultSet = null;
+    public static ResultSet insertHoliday(String holidayName, int typeId, String holidayDate) throws SQLException{
         PreparedStatement stmnt = con.prepareStatement("INSERT INTO HOLIDAY (ID, NAME, " +
                 "TYPE_ID, START_DATE) VALUES (holiday_seq.nextval, '" + holidayName + "', '" +
                 typeId + "', TO_DATE('" + holidayDate + "', 'DD - MM - YYYY'))");
-        return resultSet = stmnt.executeQuery();
+        return stmnt.executeQuery();
     }
 
-    public static ResultSet insertHolidayTwoDate(String holidayName, int typeId, String holidayStartDate,
-                                          String holidayEndDate) throws SQLException{
-        ResultSet resultSet = null;
+    public static ResultSet insertHolidayTwoDate(String holidayName, int typeId, String holidayStartDate, String holidayEndDate) throws SQLException{
         PreparedStatement stmnt = con.prepareStatement("INSERT INTO HOLIDAY (ID, NAME, " +
                 "TYPE_ID, START_DATE, END_DATE) VALUES (holiday_seq.nextval, '" + holidayName + "', '" +
                 typeId + "', TO_DATE('" +  holidayStartDate + "', 'DD - MM - YYYY'), " +
                 "TO_DATE('" +  holidayEndDate + "', 'DD - MM - YYYY'))");
-        return resultSet = stmnt.executeQuery();
+        return stmnt.executeQuery();
     }
 
-    public static ResultSet insertTradition(int countryId, int holidayId, int userId,
-                                             String description, String imgUrl) throws SQLException{
-        ResultSet resultSet = null;
+    public static void updateHoliday(int id, String holidayName, int typeId, String holidayDate) throws SQLException{
+        PreparedStatement stmnt = con.prepareStatement("UPDATE HOLIDAY SET NAME = '" + holidayName +
+        "', TYPE_ID = '" + typeId + "', START_DATE = TO_DATE('" + holidayDate + "', 'DD - MM - YYYY') " +
+                " WHERE ID = '" + id + "'");
+        stmnt.executeQuery();
+    }
+
+    public static void updateHolidayTwoDate(int id, String holidayName, int typeId, String holidayStartDate, String holidayEndDate) throws SQLException {
+        PreparedStatement stmnt = con.prepareStatement("UPDATE HOLIDAY SET NAME = '" + holidayName +
+                "', TYPE_ID = '" + typeId + "', START_DATE = TO_DATE('" + holidayStartDate +
+                "', 'DD - MM - YYYY'), END_DATE = TO_DATE('" + holidayEndDate +
+                "', 'DD - MM - YYYY') WHERE ID = '" + id + "'");
+    }
+
+    private static ResultSet getHolidaysType() throws SQLException{
+        PreparedStatement stmnt = con.prepareStatement("SLEECT NAME FROME TYPE");
+        return stmnt.executeQuery();
+    }
+
+    public static ArrayList<String> getHolidaysTypeList() throws SQLException{
+        return LoadData.getResultList(getHolidaysType());
+    }
+
+    private static void insertIntoTradition(int countryId, int holidayId, int userId, String description, String imgUrl) throws SQLException{
         String request = "INSERT INTO TRADITION (ID, COUNTRY_ID, " +
                 "HOLIDAY_ID, USER_ID, DESCRIPTION, IMG_URL) VALUES (tradition_seq.nextval, '" + countryId +
                 "', '" + holidayId + "', '" +  userId + "', '" + description + "', '" + imgUrl +"')";
         PreparedStatement stmnt = con.prepareStatement(request);
-        System.out.println(request);
-        return resultSet = stmnt.executeQuery();
+        stmnt.executeQuery();
+    }
+
+    private static void insertIntoStatistic(int traditionId) throws SQLException {
+        PreparedStatement stmnt = con.prepareStatement("INSERT INTO STATISTIC (ID, TRADITION_ID) " +
+                "VALUES ('" + traditionId + "', '" + traditionId + "')");
+        stmnt.executeQuery();
+    }
+
+    public static void insertTradition(int countryId, int holidayId, int userId, String description, String imgUrl) throws SQLException {
+        insertIntoTradition(countryId, holidayId, userId, description, imgUrl);
+        int traditionId = getLastTraditionID();
+        insertIntoStatistic(traditionId);
+    }
+
+    public static void updateTradition(int traditionId, int countryId, int holidayId, String description, String imgUrl) throws SQLException {
+        String request = "UPDATE TRADITION SET COUNTRY_ID = '" + countryId + "', HOLIDAY_ID = '" +
+                holidayId + "', DESCRIPTION = '" + description + "', IMG_URL = '" + imgUrl + "' WHERE " +
+                "ID = '" + traditionId + "'";
+        PreparedStatement stmnt = con.prepareStatement(request);
+        stmnt.executeQuery();
+    }
+
+    public static int getLastTraditionID() throws SQLException{
+        String request = "SELECT MAX(ID) FROM TRADITION";
+        PreparedStatement stmnt = con.prepareStatement(request);
+        return getIntegerValue(stmnt.executeQuery());
     }
 
     public static void deleteTradition(int traditionId) throws SQLException{
         PreparedStatement stmnt = con.prepareStatement("DELETE FROM TRADITION WHERE ID = '" +
                 traditionId + "'");
-        //ResultSet resultSet = stmnt.executeQuery();
         stmnt.executeQuery();
-    }
-
-    public static ResultSet insertStatistic(int traditionId) throws SQLException {
-        ResultSet resultSet = null;
-        PreparedStatement stmnt = con.prepareStatement("INSERT INTO STATISTIC (ID, TRADITION_ID) " +
-                "VALUES ('" + traditionId + "', '" + traditionId + "')");
-        return resultSet = stmnt.executeQuery();
     }
 
     public static void deleteStatistic(int traditionId) throws SQLException {
         PreparedStatement stmnt = con.prepareStatement("DELETE FROM STATISTIC WHERE TRADITION_ID = '" +
                 traditionId + "'");
-        //ResultSet resultSet = stmnt.executeQuery();
         stmnt.executeQuery();
     }
 
-    public static ResultSet insertComment(String text, int traditionId, int userId)
-                                                                    throws  SQLException{
-        ResultSet resultSet = null;
+    public static ResultSet insertComment(String text, int traditionId, int userId) throws  SQLException{
         PreparedStatement stmnt = con.prepareStatement("INSERT INTO COMMENTS (ID, TEXT, " +
                 "TRADITION_ID, CUR_DATE, USER_ID) VALUES (comments_seq.nextval, '" + text + "', '"
                 + traditionId + "', '" + new java.util.Date() + "', '" +  userId + "')");
-        return resultSet = stmnt.executeQuery();
+        return stmnt.executeQuery();
     }
 
     public static void deleteComments(int traditionId) throws SQLException{
         PreparedStatement stmnt = con.prepareStatement("DELETE FROM COMMENTS WHERE TRADITION_ID = '" +
                 traditionId + "'");
-        //ResultSet resultSet = stmnt.executeQuery();
         stmnt.executeQuery();
     }
 
     public static int getCommentCount(int traditionId) throws SQLException{
-        ResultSet resultSet = null;
         PreparedStatement stmnt = con.prepareStatement("SELECT COUNT(*) FROM COMMENTS " +
                 "WHERE TRADITION_ID = '" + traditionId + "'");
-        resultSet = stmnt.executeQuery();
-        return getIntegerValue(resultSet);
+        return getIntegerValue(stmnt.executeQuery());
     }
 
     public static ResultSet getTraditionComment(int traditionId) throws SQLException{
-        ResultSet resultSet = null;
         PreparedStatement stmnt = con.prepareStatement("SELECT TEXT FROM COMMENTS " +
                 "WHERE TRADITION_ID = '" + traditionId + "'");
-         return resultSet = stmnt.executeQuery();
+         return stmnt.executeQuery();
     }
 
     public static ResultSet incReads(int traditionId, int count) throws SQLException{
         count++;
-        ResultSet resultSet = null;
         PreparedStatement stmnt = con.prepareStatement("UPDATE STATISTIC SET READS = " + count +
                 " WHERE TRADITION_ID = '" + traditionId + "'");
-        return resultSet = stmnt.executeQuery();
+        return stmnt.executeQuery();
     }
 
     public static int getReads(int traditionId) throws SQLException{
-        ResultSet resultSet = null;
         PreparedStatement stmnt = con.prepareStatement("SELECT READS FROM STATISTIC " +
                 "WHERE TRADITION_ID = '" + traditionId +"'");
-        resultSet = stmnt.executeQuery();
-        return getIntegerValue(resultSet);
+        return getIntegerValue(stmnt.executeQuery());
+    }
+
+    public static Integer getIdValue(String tableName, String valueName) throws SQLException{
+            PreparedStatement stmnt = con.prepareStatement("SELECT ID FROM " + tableName +
+                    " WHERE NAME = " + valueName);
+        return getIntegerValue(stmnt.executeQuery());
     }
 
     public static ResultSet getUserHolidays(int userId) throws SQLException {
@@ -240,9 +263,16 @@ public class DataBaseVoids {
         return getIntegerValue(stmnt.executeQuery());
     }
 
+    public static String getUserLogin(int id) throws SQLException {
+        PreparedStatement stmnt = con.prepareStatement("SELECT LOGIN FROM USERLIST WHERE ID = '" +
+                id + "'");
+        return getStringValue(stmnt.executeQuery());
+    }
+
     //region Работа с базой
     private static ResultSet selectUserHolidays(int userID) throws SQLException {
-        PreparedStatement stmnt = con.prepareStatement("SELECT * FROM HOLIDAYLIBRARY.HOLIDAY WHERE ID IN (SELECT HOLIDAY_ID FROM HOLIDAYLIBRARY.TRADITION WHERE USER_ID = " + userID + ")");
+        PreparedStatement stmnt = con.prepareStatement("SELECT * FROM HOLIDAY WHERE ID IN (SELECT " +
+                "HOLIDAY_ID FROM TRADITION WHERE USER_ID = " + userID + ")");
         return stmnt.executeQuery();
     }
 
@@ -254,8 +284,8 @@ public class DataBaseVoids {
     }
 
     private static ResultSet selectHolidayTraditions(String holidayName, int userId) throws SQLException {
-        PreparedStatement stmnt = con.prepareStatement("SELECT * FROM HOLIDAYLIBRARY.TRADITION where HOLIDAY_ID IN " +
-                "(SELECT ID FROM HOLIDAYLIBRARY.HOLIDAY WHERE NAME ='" + holidayName +
+        PreparedStatement stmnt = con.prepareStatement("SELECT * FROM TRADITION where HOLIDAY_ID IN " +
+                "(SELECT ID FROM HOLIDAY WHERE NAME ='" + holidayName +
                 "') AND USER_ID =" + userId);
         return stmnt.executeQuery();
     }
@@ -298,9 +328,16 @@ public class DataBaseVoids {
                 "VALUES ("+traditionCount+", "+countryId+", "+ holidayId+ ", " + userID+ ", "+ description+")");
         return traditionCount;
     }
+
+    public static void searchHoliday(String name) throws SQLException{
+        ResultSet traditions = getHolidayTraditions(name,
+                Calendar.getUserId());
+        Calendar.getTraditions().clear();
+        Calendar.setTraditionsList(traditions);
+    }
+
     //endregion
     ////поиск
-
     public static void setSearchString(String string) {
         String[] getString = string.split(" ");
         int length = 0;

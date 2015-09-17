@@ -9,11 +9,13 @@
     <ul>
         <li><a href="/WebApp/index.jsp?news=true&show=true">Main page</a></li>
         <li><a href="/WebApp/index.jsp?faq-ru">FAQ</a></li>
-        <li><a href="/WebApp/index.jsp?gbook=true">Guest book</a></li>
-        <li><a href="/WebApp/ajax.jsp">Language</a>&nbsp;&nbsp;&nbsp;</li>
+        <pre></pre>
         <li>
-            <img src="images/search.png" alt="Поиск по сайту" width="25" class="search_img f_right">
-            <input type="text" name="topsearch" placeholder="Search..." class="searchField b3radius"></li>
+            <form action="/WebApp/index.jsp?search=true" method="get">
+                <input type="image" src="images/search.png" alt="Поиск по сайту" width="25" class="search_img f_right">
+                <input type="text" name="topsearch" placeholder="Search..." class="searchField b3radius">
+            </form>
+        </li>
     </ul>
 </div>
 </body>

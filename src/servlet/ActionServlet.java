@@ -1,47 +1,39 @@
 package servlet;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
+import beans.UserWorking;
 
+import javax.ejb.EJB;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.io.IOException;
+import java.sql.SQLException;
 /**
  * Created by iocz on 12/09/15.
  */
-@WebServlet(name = "ActionServlet")
+
 /**
- * Servlet implementation class ActionServlet
+ * Servlet implementation class servlet.ActionServlet
  */
-
+@WebServlet(urlPatterns = "/myservlet")
 public class ActionServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+        @EJB
+        //private HelloUser userBean;
+        private UserWorking user;
 
-
-    public ActionServlet() {
-        // TODO Auto-generated constructor stub
-    }
-
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name=null;
-        name = "Hello "+request.getParameter("user");
-        if(request.getParameter("user").toString().equals("")){
-            name="Hello User";
+        @Override
+        protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            boolean name = false;
+            try {
+                name = user.isAuthenticate("FOG", "Ivov");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            req.setAttribute("name",name);
+            req.getRequestDispatcher("hello.jsp").forward(req,resp);
         }
-        response.setContentType("text/plain");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(name);
-    }
-
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
-
-    }
-
 }
 
 

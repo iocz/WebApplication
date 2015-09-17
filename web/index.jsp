@@ -3,8 +3,8 @@
 <%@ page import="func.LoadData" %>
 <%@ page import="func.Content" %>
 <%@ page import="func.Calendar" %>
-<%@ page import="model.Tradition" %>
 <%@ page import="java.util.*" %>
+<%@ page import="models.Tradition" %>
 <%--
   Created by IntelliJ IDEA.
   User: !!!!!!!
@@ -37,9 +37,12 @@
           String addNews = request.getParameter("addNews");
           String title = request.getParameter("title");
           String showNews = request.getParameter("show");
+          String holidayName = request.getParameter("holidayName");
 
           String traditionName = request.getParameter("traditionName");
           String faq = request.getParameter("faq-ru");
+          String xml = request.getParameter("xml");
+          String importXML = request.getParameter("importXML");
           String gbook = request.getParameter("gbook");
 
           func.DataBaseVoids.main();
@@ -52,9 +55,12 @@
               Calendar.getHolidays().clear();
               Calendar.getTraditions().clear();
               //Загрузка данных в HashMap.
-              LoadData.setHashMapCountries(DataBaseVoids.selectCountries());
-              LoadData.setHashMapHolidays(DataBaseVoids.selectHoliday());
-              LoadData.setHashMapTraditions(DataBaseVoids.selectAllTraditions());
+              //LoadData.setHashMapCountries(DataBaseVoids.selectCountries());
+              //LoadData.setHashMapHolidays(DataBaseVoids.selectHoliday());
+              //LoadData.setHashMapTraditions(DataBaseVoids.selectAllTraditions());
+              Calendar.setCountriesList(DataBaseVoids.selectCountries());
+              Calendar.setHolidaysList(DataBaseVoids.selectHoliday());
+              Calendar.setTraditionsList(DataBaseVoids.selectAllTraditions());
           }
           if (Calendar.getUserId() > 0 && Calendar.getShowNews()) {
               ArrayList<String> pages = Content.getPages();
@@ -65,8 +71,6 @@
               Integer pageNum = Integer.parseInt(currentPage);
               for (int i = (pageNum - 1) * 10; i < (pageNum * 10 < pages.size() ? pageNum * 10 :
               pages.size()); i++) {
-                  System.out.println("size = " + pages.size());
-                  System.out.println(i);
       %>
             <jsp:include page="<%= pages.get(i)%>"/>
       <%
@@ -75,15 +79,47 @@
           }if (traditionName != null) {
       %>
             <jsp:include page="full_news.jsp"/>
-      <%
-      } else if (addNews != null) {//TODO Дописать всe параметры
-          String url = title != null ? "addnews.jsp?title=" + title : "addnews.jsp";
+      <%}  else if (addNews != null) {//TODO Дописать всe параметры
+          //String type = request.getParameter("type");
+          //String date = request.getParameter("date");
+          String country = request.getParameter("country");
+          String description = request.getParameter("description");
+          String id = request.getParameter("id");
+
+          String url = "addnews.jsp";
+          if (title != null) {
+          StringBuilder changePageUrl = new StringBuilder("addnews.jsp?title=".concat(title).concat(
+                  "&id=").concat(id).concat("&country=").concat(country).concat(
+                  "&description=").concat(description)
+          );
+            url = changePageUrl.toString();
+          }
       %>
             <jsp:include page="<%=url%>"/>
       <%
-      } else if (request.getParameter("holidays") != null) {
+      } else if (holidayName != null) {
+          //TODO всё в методы
+          ResultSet traditions = DataBaseVoids.getHolidayTraditions(request.getParameter("holidayName"),
+                  Calendar.getUserId());
+
+          while (traditions.next()) {
+              Calendar.getTraditions().clear();
+              Calendar.setTraditionsList(DataBaseVoids.getHolidayTraditions(request.getParameter(
+                      "holidayName"), Calendar.getUserId()));
+          }
+          ArrayList<String> pages = Content.getPages();
+          for (int i = 0; i < pages.size(); i++) {
+      %>
+      <jsp:include page="<%= pages.get(i)%>"/>
+      <%
+          }
+          Calendar.getTraditions().clear();
+          Calendar.setTraditionsList(traditions);
+
+      }else if (request.getParameter("holidays") != null) {
           ResultSet set = DataBaseVoids.getUserHolidays(Calendar.getUserId());
-      out.print("<ul>");
+              out.print("<div class=holidays>");
+              out.print("<ul>");
               while (set.next()) {
               String current = set.getString("NAME");
       %>
@@ -91,10 +127,10 @@
               <a href="index.jsp?holidayName=<%=current%>"><%=current%></a>
           </li>
       <%
-          }
-      out.print("</ul>");
+      } out.print("</ul>"); out.print("</div>");
       } else if (request.getParameter("countries") != null) {
           ResultSet set = DataBaseVoids.getCountries();
+          out.print("<div class=holidays>");
           out.print("<ul>");
               while (set.next()) {
               String current = set.getString("NAME");
@@ -104,7 +140,8 @@
           </li>
           <%}
           %>
-      </ul> <%
+      </ul>
+      </div> <%
       } else if (request.getParameter("traditions") != null) {
          ResultSet set = DataBaseVoids.getUserTraditions(Calendar.getUserId());
          while (set.next()) {
@@ -117,8 +154,8 @@
          ResultSet traditions = DataBaseVoids.getCountryTraditions(request.getParameter("countryName"), Calendar.getUserId());
          while (traditions.next()) {
             Calendar.getTraditions().clear();
-            LoadData.setHashMapTraditions(DataBaseVoids.getCountryTraditions(request.getParameter(
-                  "countryName"), Calendar.getUserId()));
+            Calendar.setTraditionsList(DataBaseVoids.getCountryTraditions(request.getParameter(
+                    "countryName"), Calendar.getUserId()));
       }
       ArrayList<String> pages = Content.getPages();
       for (int i = 0; i < pages.size(); i++) {
@@ -126,19 +163,34 @@
              <jsp:include page="<%= pages.get(i)%>"/>
       <%
           }
-      } else if (request.getParameter("holidayName") != null) {
-        ResultSet traditions = DataBaseVoids.getHolidayTraditions(request.getParameter("holidayName"),Calendar.getUserId());
-        while (traditions.next())
-          out.print(traditions.getString("DESCRIPTION").toString());
-      } else if (faq != null) {
+
+      }  else if (faq != null) {
       %>
             <jsp:include page="faq-ru.html"/>
       <%
-      } else if (gbook != null) {
+      } else if (xml != null) {
+      %>
+            <jsp:include page="XMLForm.jsp"/>
+      <%
+      } else if (importXML != null) {
+        %>
+            <jsp:include page="loadData.html"/>
+    <%
+      }else if (gbook != null) {
       %>
             <jsp:include page="guest_book.jsp"/>
       <%
-      } else if (Calendar.getUserId() < 1) {
+      }else if (request.getParameter("topsearch") != null) {
+          DataBaseVoids.searchHoliday(request.getParameter("topsearch"));
+          ArrayList<String> pages = Content.getPages();
+
+          for (int i = 0; i < pages.size(); i++) {
+              System.out.println(pages.get(i));
+      %>
+    <jsp:include page="<%= pages.get(i)%>"/>
+    <%
+        }
+    } else if (Calendar.getUserId() < 1) {
       %>
             <jsp:include page="welcome.html"/>
       <%
@@ -151,18 +203,15 @@
            %>
                 <jsp:include page="menu.html"/>
            <%
+                }else if (registration != null){
+           %>
+                <jsp:include page="registration.html"/>
+           <%
                } else if (Calendar.getUserId() < 1) {
            %>
                 <jsp:include page="login.jsp"/>
            <%
-               }else if (registration != null){
-           %>
-                <jsp:include page="registration.jsp"/>
-           <%
-               } else if (Calendar.getIsWrongLoginPass()) {
-           %>
-                <jsp:include page="wrongLogIn.html"/>
-           <%  }
+               }
            %>
    </div>
    <div class="clr"></div>
