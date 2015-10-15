@@ -15,9 +15,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-/**
- * Created by iocz on 06/10/15.
- */
 @Stateless
 public class UserBean implements UserWorking {
     @Override

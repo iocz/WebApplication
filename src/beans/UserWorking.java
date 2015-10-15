@@ -1,11 +1,7 @@
 package beans;
 
-import models.User;
-
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public interface UserWorking {
     //TODO шифровать пароли.

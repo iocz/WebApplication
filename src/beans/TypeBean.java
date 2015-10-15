@@ -14,9 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
-/**
- * Created by iocz on 12/10/15.
- */
 @Stateless
 public class TypeBean implements TypeWorking{
     private ResultSet selectType() throws SQLException {

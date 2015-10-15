@@ -1,8 +1,5 @@
 package models;
 
-/**
- * Created by iocz on 11/10/15.
- */
 public class StringConst {
     //TODO переписать и сократить пути.
     public static final String COUNTRY_PATH_XML = "/home/iocz/Документы/WebApplication/src/resources/xml/countrySave.xml";

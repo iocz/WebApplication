@@ -19,9 +19,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by iocz on 07/10/15.
- */
 @Stateless
 public class TraditionBean implements TraditionWorking {
     private ResultSet selectUserTraditions(int userID) throws SQLException {

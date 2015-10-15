@@ -1,8 +1,5 @@
 package models;
 
-/**
- * Created by 1 on 23.06.2015.
- */
 public class UserData {
 
     private String name;

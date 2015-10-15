@@ -8,9 +8,6 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by iocz on 07/10/15.
- */
 public interface CountryWorking {
     ResultSet selectCountries() throws SQLException;
     ResultSet insertCountry(String countryName) throws SQLException;

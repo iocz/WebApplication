@@ -20,9 +20,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by iocz on 07/10/15.
- */
 @Stateless
 public class CountryBean implements CountryWorking {
     private SAXBuilder builder = new SAXBuilder();

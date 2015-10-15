@@ -19,7 +19,6 @@ import java.util.List;
 public class ImportBean implements ImportWorking {
     private SAXBuilder builder = new SAXBuilder();
 
-    //Проверка на существование элемента по id.
     private Boolean checkExist(int id, String tableName){
         DataBaseVoids.main();
         try {

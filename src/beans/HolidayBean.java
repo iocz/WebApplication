@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by iocz on 07/10/15.
- */
 @Stateless
 public class HolidayBean implements HolidayWorking {
     public ResultSet selectAllHolidaysNames() throws SQLException {

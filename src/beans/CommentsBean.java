@@ -11,9 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created by iocz on 12/10/15.
- */
 @Stateless
 public class CommentsBean implements CommentsWorking{
     public ResultSet selectComments() throws SQLException {

@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by iocz on 07/10/15.
- */
 public interface TraditionWorking {
     ResultSet selectAllTraditions() throws SQLException;
     void insertIntoTradition(int countryId, int holidayId, int userId, String description, String imgUrl) throws SQLException;
