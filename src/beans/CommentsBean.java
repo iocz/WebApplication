@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+//
 @Stateless
 public class CommentsBean implements CommentsWorking{
     public ResultSet selectComments() throws SQLException {

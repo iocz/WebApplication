@@ -2,19 +2,17 @@ package beans;
 
 import func.DataBaseVoids;
 import func.FileWorking;
-import models.Country;
-import models.Holiday;
-import models.Tradition;
+import model.Country;
+import model.Holiday;
+import model.Tradition;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
 import javax.ejb.Stateless;
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;

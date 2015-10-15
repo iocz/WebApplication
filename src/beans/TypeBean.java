@@ -2,17 +2,14 @@ package beans;
 
 import func.DataBaseVoids;
 import func.FileWorking;
-import models.Holiday;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
 import javax.ejb.Stateless;
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
 
 @Stateless
 public class TypeBean implements TypeWorking{

@@ -1,6 +1,6 @@
 package beans;
 
-import models.Holiday;
+import model.Holiday;
 
 import java.io.IOException;
 import java.sql.ResultSet;

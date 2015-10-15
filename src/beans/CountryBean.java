@@ -2,7 +2,7 @@ package beans;
 
 import func.DataBaseVoids;
 import func.FileWorking;
-import models.Country;
+import model.Country;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -11,7 +11,6 @@ import org.xml.sax.SAXException;
 
 
 import javax.ejb.Stateless;
-import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

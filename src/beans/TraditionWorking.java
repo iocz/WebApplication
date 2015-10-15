@@ -1,13 +1,12 @@
 package beans;
 
-import models.Country;
-import models.Holiday;
-import models.Tradition;
+import model.Country;
+import model.Holiday;
+import model.Tradition;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

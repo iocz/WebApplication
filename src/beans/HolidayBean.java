@@ -4,7 +4,7 @@ import func.Calendar;
 import func.DataBaseVoids;
 import func.FileWorking;
 import func.LoadData;
-import models.Holiday;
+import model.Holiday;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
@@ -12,7 +12,6 @@ import javax.ejb.Stateless;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Stateless

@@ -3,7 +3,6 @@ package beans;
 import func.Calendar;
 import func.DataBaseVoids;
 import func.FileWorking;
-import models.User;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
@@ -13,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 @Stateless
 public class UserBean implements UserWorking {

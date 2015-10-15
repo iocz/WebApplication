@@ -1,11 +1,10 @@
 package beans;
 
-import models.Country;
+import model.Country;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 
 public interface CountryWorking {
